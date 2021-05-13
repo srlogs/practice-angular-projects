@@ -14,10 +14,10 @@ export class ProductRepository {
     }
     getProducts(category: string = ""): Product[] {
         return this.products
-            .filter(p => category == null || category == p.category);
+            .filter(p => category == "" || category == p.category);
     }
 
-    getProduct(id: number): Product {
+    getProduct(id: number) {
         return this.products.find((p: any) => p.id == id);
     }
 
