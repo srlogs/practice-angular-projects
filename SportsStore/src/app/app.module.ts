@@ -30,9 +30,14 @@ import { StoreFirstGuard } from './storeFirst.guard';
         canActivate: [StoreFirstGuard]
       },
       {
+        path: 'admin',
+        loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule),
+        canActivate: [StoreFirstGuard]
+      },
+      {
         path: '**',
         redirectTo: '/store'
-      }
+      },
     ])
   ],
   providers: [StoreFirstGuard],

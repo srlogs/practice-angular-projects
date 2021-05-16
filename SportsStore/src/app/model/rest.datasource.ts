@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { Product } from './product.model';
 import { Cart } from './cart.model';
@@ -13,6 +14,7 @@ const PORT = 3500;
 
 export class RestDataSource {
     baseUrl: string = '';
+    auth_token: string = '';
 
     constructor(private http: HttpClient) {
         this.baseUrl = `${PROTOCOL}://${location.hostname}:${PORT}/`;
@@ -24,5 +26,14 @@ export class RestDataSource {
 
     saveOrder(order: Order): Observable<Order> {
         return this.http.post<Order>(this.baseUrl + "orders", order);
+    }
+
+    authenticate(user: string, pass: string): Observable<boolean> {
+        return this.http.post<any>(this.baseUrl + "login", {
+            name: user, password: pass
+        }).pipe(map(response => {
+            this.auth_token = response.success ? response.token : null;
+            return response.success;
+        }));
     }
 }
